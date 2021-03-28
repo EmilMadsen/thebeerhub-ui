@@ -1,18 +1,22 @@
 <template>
-  <v-container class="home-main" v-if="brews.length > 0">
+  <v-container class="home-main">
     <v-row>
       <v-col cols="12">
         <Banner/>
       </v-col>
+    </v-row>
 
+    <v-row v-if="brews.length > 0">
       <feed-card
-        v-for="(brew, i) in brews"
-        :key="i"
-        :size="layout[i]"
-        :brew="brew"
-        v-on:gotobrew="gotoBrew"
+              v-for="(brew, i) in brews"
+              :key="i"
+              :size="layout[i]"
+              :brew="brew"
+              v-on:gotobrew="gotoBrew"
       />
     </v-row>
+
+
 
   </v-container>
 </template>
@@ -50,7 +54,7 @@ export default {
 
     gotoBrew(brewId) {
       console.log("opening: " + brewId)
-      this.$router.push({ name: 'details', params: {id: brewId }})
+      this.$router.push({ path: '/details/' + brewId})
 
     }
 

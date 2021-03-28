@@ -1,8 +1,8 @@
 <template>
   <v-app>
 
-    <v-app-bar>
-    
+    <v-app-bar app>
+
     <v-btn class="hidden-sm-and-down" text @click="gotoPage('home')">Home</v-btn>
     <v-btn class="hidden-sm-and-down" text>About</v-btn>
 
@@ -21,8 +21,12 @@
       </v-btn>
     </v-app-bar>
 
-    <router-view></router-view>
-    
+    <v-main>
+      <router-view></router-view>
+    </v-main>
+
+    <Footer/>
+
   </v-app>
 </template>
 
@@ -30,6 +34,10 @@
 
 export default {
   name: 'App',
+
+  components: {
+    Footer: () => import('@/components/Footer'),
+  },
 
   methods: {
     gotoPage(name) {
