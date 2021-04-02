@@ -54,11 +54,21 @@
         <v-text-field v-model.number="brew.actual_end_gravity" type="number" label="Actual End Gravity"></v-text-field>
       </v-col>
 
+      <v-btn color="secondary" @click="saveBrew">
+        Save
+      </v-btn>
+
+      <v-btn v-if="id" color="red" @click="deleteBrew">
+        Delete
+      </v-btn>
+
     </v-row>
 
-    <v-btn color="secondary" @click="saveBrew"
-    >Save
-    </v-btn>
+    <v-row>
+      {{steps}}
+    </v-row>
+
+
 
   </v-container>
 </template>
@@ -72,12 +82,14 @@ export default {
   data() {
     return {
       brew: {},
+      steps: [],
     };
   },
 
   mounted() {
     if (this.id) {
       this.loadBrew();
+      this.loadSteps(this.id);
     }
   },
 
@@ -95,12 +107,28 @@ export default {
         });
     },
 
+    loadSteps(parentId) {
+      if (parentId) {
+        axios
+          .get(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id)
+          .then((response) => {
+            console.log(response);
+            this.steps = response.data.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+
     saveBrew() {
       axios
         .post(process.env.VUE_APP_API_BREW + '/brew/', this.brew)
         .then((response) => {
           console.log(response);
-          if (!this.id) {
+          if (response.status === 201) {
+            this.brew = response.data;
+            this.loadSteps(response.data.id);
             this.$router.push({path: '/details/' + response.data.id})
           } else {
             this.brew = response.data;
@@ -109,6 +137,20 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+
+    deleteBrew() {
+      if (confirm("really? delete this?")) {
+        axios
+          .delete(process.env.VUE_APP_API_BREW + '/brew/' + this.brew.id)
+          .then(response => {
+            console.log(response)
+            this.$router.push({path: '/home'})
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
 
   }
