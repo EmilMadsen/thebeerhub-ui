@@ -1,74 +1,30 @@
 <template>
   <v-container>
 
-    <v-row>
+    <brew-info 
+      v-bind:brew=brew
+      v-on:save="saveBrew"
+      v-on:delete="deleteBrew"
+      ></brew-info>
 
-      <v-col cols="12" md="3">
-        <v-text-field v-model="brew.brew_name" label="Name of brew"></v-text-field>
-      </v-col>
-
-      <v-col cols="12" md="3">
-        <v-text-field v-model="brew.brew_type" label="Brew Type"></v-text-field>
-      </v-col>
-
-      <v-col cols="12" md="3">
-        <v-text-field v-model="brew.id" disabled label="Id"></v-text-field>
-      </v-col>
-
-      <v-col cols="12" md="3">
-        <v-text-field v-model="brew.datetime" disabled label="Datetime"></v-text-field>
-      </v-col>
-
-      <v-col cols="12" md="3">
-        <v-text-field v-model="brew.brewsters" label="Brewsters"></v-text-field>
-      </v-col>
-
-      <v-col cols="12" md="3">
-        <v-text-field v-model="brew.location" label="Location"></v-text-field>
-      </v-col>
-
-      <v-col cols="12" md="3">
-        <v-text-field v-model="brew.recipe" label="Recipe"></v-text-field>
-      </v-col>
-
-    </v-row>
-
-
-
-
-    <v-row>
-
-      <v-col cols="12" md="3">
-        <v-text-field v-model.number="brew.target_start_gravity" type="number" label="Target Start Gravity"></v-text-field>
-      </v-col>
-
-      <v-col cols="12" md="3">
-        <v-text-field v-model.number="brew.actual_start_gravity" type="number" label="Actual Start Gravity"></v-text-field>
-      </v-col>
-
-      <v-col cols="12" md="3">
-        <v-text-field v-model.number="brew.target_end_gravity" type="number" label="Target End Gravity"></v-text-field>
-      </v-col>
-
-      <v-col cols="12" md="3">
-        <v-text-field v-model.number="brew.actual_end_gravity" type="number" label="Actual End Gravity"></v-text-field>
-      </v-col>
-
-      <v-btn color="secondary" @click="saveBrew">
-        Save
-      </v-btn>
-
-      <v-btn v-if="id" color="red" @click="deleteBrew">
-        Delete
-      </v-btn>
-
-    </v-row>
-
-    <v-row>
-      {{steps}}
-    </v-row>
-
-
+    <v-container>
+      <v-row>
+        <v-col cols="12" md="3" v-for="step in steps" v-bind:key="step.id">
+          <v-card outlined>
+            <v-list-item>
+              <v-list-item-content class="mb-3">
+                <div class="overline">
+                    {{step.index}} - {{step.name}}
+                </div>
+                <v-list-item-subtitle>started: {{step.started}}</v-list-item-subtitle>
+                <v-list-item-subtitle>ended: {{step.ended}}</v-list-item-subtitle>
+                <v-list-item-subtitle>duration: {{step.started}}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
 
   </v-container>
 </template>
@@ -78,6 +34,10 @@ import axios from "axios";
 
 export default {
   props: ["id"],
+
+  components: {
+    BrewInfo: () => import("@/components/BrewInfo")
+  },
 
   data() {
     return {

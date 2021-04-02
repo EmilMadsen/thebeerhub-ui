@@ -44,7 +44,7 @@
     data: () => ({
       items: [
         {
-          href: '#/create',
+          href: '/create',
           icon: 'mdi-plus',
         },
       ],

@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../components/Home.vue'
-import BrewDetails from '../components/BrewDetails.vue'
+import Home from '../views/Home.vue'
+import Details from '../views/Details.vue'
+import Create from '../views/Create.vue'
 
 Vue.use(Router)
 
 export default new Router({
-  //mode: 'history',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes: [
 
@@ -20,14 +21,14 @@ export default new Router({
 
     {
       path: '/create',
-      name: 'details',
-      component: BrewDetails,
+      name: 'create',
+      component: Create,
     },
 
     {
       path: '/details/:id',
       name: 'details',
-      component: BrewDetails,
+      component: Details,
       props: true
     }
 
