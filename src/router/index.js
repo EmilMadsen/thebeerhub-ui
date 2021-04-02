@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '../views/Home.vue'
 import Details from '../views/Details.vue'
 import Create from '../views/Create.vue'
+import Stepper from '../views/Stepper.vue'
 
 Vue.use(Router)
 
@@ -29,6 +30,13 @@ export default new Router({
       path: '/details/:id',
       name: 'details',
       component: Details,
+      props: true
+    },
+
+    {
+      path: '/stepper/:id',
+      name: 'stepper',
+      component: Stepper,
       props: true
     }
 

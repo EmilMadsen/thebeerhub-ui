@@ -1,7 +1,7 @@
 <template>
   <v-container>
 
-    <brew-info 
+    <brew-info
       v-bind:brew=brew
       v-on:save="saveBrew"
       v-on:delete="deleteBrew"
@@ -30,10 +30,12 @@
 </template>
 
 <script>
+
 import axios from "axios";
 
 export default {
-  props: ["id"],
+
+  props: ['id'],
 
   components: {
     BrewInfo: () => import("@/components/BrewInfo")
