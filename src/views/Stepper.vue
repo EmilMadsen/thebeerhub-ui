@@ -8,21 +8,19 @@
                     {{duration}}
                 </p>
                 <p>{{brew.brew_name}} ({{brew.brew_type}}) </p>
+<!--                <div class="text&#45;&#45;primary">-->
+<!--                    step: <i>{{ activeStep ? activeStep.index : '?' }} out of {{steps.length}}</i>-->
+<!--                </div>-->
                 <div class="text--primary">
-                    step: <i>{{ activeStep ? activeStep.index : '?' }} out of {{steps.length}}</i>
-                </div>
-                <div class="text--primary">
-                    started: <i>{{ activeStep ? activeStep.started : '' }}</i>
+                    started: <i>{{ activeStep.started ? new Date(activeStep.started).toLocaleString() : '-' }}</i>
                 </div>
             </v-card-text>
             <v-card-actions>
-                <v-btn color="secondary" @click="startNextStep">
-                    Next Step
+                <v-btn color="secondary" @click="nextStep">
+                    {{ activeStep.started ? 'Next Step': 'Start' }}
                 </v-btn>
             </v-card-actions>
         </v-card>
-
-        {{steps}}
 
     </v-container>
 </template>
@@ -36,7 +34,7 @@
 
         data() {
             return {
-                steps: [],
+                activeStep: {},
                 brew: {},
                 duration: "0d 0h 0m 0s",
             };
@@ -44,32 +42,17 @@
 
         mounted() {
             if (this.id) {
-                this.loadSteps(this.id);
+                this.loadStep();
+                this.loadAll();
                 this.loadBrew();
             }
             this.setDuration();
         },
 
-        computed: {
-
-            activeStep() {
-                if (this.steps) {
-                    for (let i = 0; i < this.steps.length; i++) {
-                        if (this.steps[i].started && !this.steps[i].ended) {
-                            return this.steps[i];
-                        }
-                    }
-                    return this.steps[0];
-                }
-                return null;
-            }
-
-        },
-
         methods: {
 
             setDuration() {
-                // Update the duration every 1 second
+                // Update the duration every second
                 let self = this;
 
                 setInterval(function () {
@@ -95,45 +78,30 @@
                 }, 1000);
             },
 
-            startNextStep() {
-                if (this.activeStep) {
-                    // check if index 1 and not started
-                    if (!this.activeStep.started && this.activeStep.index === 1) {
-                        this.activeStep.started = new Date().toISOString();
-                        this.updateStep(this.activeStep)
-                    } else {
-                        // else set ended on old, and start new.
-                        let index = this.activeStep.index;
-                        this.activeStep.ended = new Date().toISOString();
-                        this.updateStep(this.activeStep)
-                            .then(response => {
-                                console.log(response)
-                                if (this.steps[index]) {
-                                    this.steps[index].started = new Date().toISOString();
-                                    this.updateStep(this.steps[index])
-                                }
-                            })
-                    }
-                }
+            loadAll() {
+              axios.get(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id)
+                      .then((response) => {
+                        console.log("all");
+                        console.log(response);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
             },
 
-            loadSteps(parentId) {
-                if (parentId) {
-                    axios
-                        .get(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id)
-                        .then((response) => {
-                            console.log(response);
-                            this.steps = response.data.data;
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
-                }
+            loadStep() {
+                  axios.get(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id + '/active')
+                      .then((response) => {
+                          console.log(response);
+                          this.activeStep = response.data;
+                      })
+                      .catch((error) => {
+                          console.log(error);
+                      });
             },
 
             loadBrew() {
-                axios
-                    .get(process.env.VUE_APP_API_BREW + "/brew/" + this.id)
+                axios.get(process.env.VUE_APP_API_BREW + "/brew/" + this.id)
                     .then((response) => {
                         console.log(response);
                         this.brew = response.data;
@@ -143,12 +111,11 @@
                     });
             },
 
-            updateStep(step) {
-                return axios
-                    .post(process.env.VUE_APP_API_BREW + '/step/', step)
+            nextStep() {
+                axios.post(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id + '/next')
                     .then((response) => {
                         console.log(response);
-                        this.loadSteps(this.id);
+                        this.loadStep()
                     })
                     .catch((error) => {
                         console.log(error);
