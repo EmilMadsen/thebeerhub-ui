@@ -8,9 +8,6 @@
                     {{duration}}
                 </p>
                 <p>{{brew.brew_name}} ({{brew.brew_type}}) </p>
-<!--                <div class="text&#45;&#45;primary">-->
-<!--                    step: <i>{{ activeStep ? activeStep.index : '?' }} out of {{steps.length}}</i>-->
-<!--                </div>-->
                 <div class="text--primary">
                     started: <i>{{ activeStep.started ? new Date(activeStep.started).toLocaleString() : '-' }}</i>
                 </div>
@@ -43,7 +40,6 @@
         mounted() {
             if (this.id) {
                 this.loadStep();
-                this.loadAll();
                 this.loadBrew();
             }
             this.setDuration();
@@ -76,17 +72,6 @@
                     }
 
                 }, 1000);
-            },
-
-            loadAll() {
-              axios.get(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id)
-                      .then((response) => {
-                        console.log("all");
-                        console.log(response);
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                      });
             },
 
             loadStep() {
