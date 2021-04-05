@@ -35,6 +35,19 @@
       <v-col cols="12" md="3">
         <v-text-field v-model="brew.recipe" label="Recipe"></v-text-field>
       </v-col>
+
+      <v-col cols="12" md="3">
+        <v-text-field v-model="brew.tilt_url" label="Tilt Url" >
+          <v-icon
+                  @click="openTiltUrl(brew.tilt_url)"
+                  slot="append"
+                  color="green"
+          >
+            mdi-link
+          </v-icon>
+
+        </v-text-field>
+      </v-col>
     </v-row>
 
     <v-row>
@@ -89,6 +102,11 @@ export default {
   props: ["brew"],
 
   methods: {
+
+    openTiltUrl(url) {
+      console.log(url)
+      window.open(url);
+    },
 
     saveBrew() {
         this.$emit('save')
