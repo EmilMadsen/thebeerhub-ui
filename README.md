@@ -22,3 +22,14 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+### Dockerize
+```
+docker build -t emilmadsen/thebeerhub-ui:tag .
+```  
+
+mode arg (env):
+```
+docker build --build-arg mode='-- --mode development' -t emilmadsen/thebeerhub-ui:tag .
+```
