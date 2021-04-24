@@ -1,10 +1,13 @@
 <template>
   <v-app>
-
     <v-app-bar app>
-
-    <v-btn class="hidden-sm-and-down" text @click="gotoPage('home')">Home</v-btn>
-    <v-btn class="hidden-sm-and-down" text>About</v-btn>
+      <v-btn class="hidden-sm-and-down" text @click="gotoPage('home')"
+        >Home</v-btn
+      >
+      <v-btn class="hidden-sm-and-down" text @click="gotoPage('priming')"
+        >Priming</v-btn
+      >
+      <v-btn class="hidden-sm-and-down" text>About</v-btn>
 
       <v-spacer></v-spacer>
 
@@ -25,26 +28,24 @@
       <router-view></router-view>
     </v-main>
 
-    <Footer/>
-
+    <Footer />
   </v-app>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-    Footer: () => import('@/components/Footer'),
+    Footer: () => import("@/components/Footer"),
   },
 
   methods: {
     gotoPage(name) {
-      this.$router.push({ name: name})
-    }
-  }
-}
+      this.$router.push({ name: name }).catch((err) => {});
+    },
+  },
+};
 </script>
 
 <style>
@@ -54,5 +55,4 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-
 </style>

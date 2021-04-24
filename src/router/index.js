@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Details from '../views/Details.vue'
 import Create from '../views/Create.vue'
 import Stepper from '../views/Stepper.vue'
+import PrimingSugar from '../views/PrimingSugar.vue'
 
 Vue.use(Router)
 
@@ -38,6 +39,12 @@ export default new Router({
       name: 'stepper',
       component: Stepper,
       props: true
+    },
+
+    {
+      path: '/priming',
+      name: 'priming',
+      component: PrimingSugar,
     }
 
   ],
