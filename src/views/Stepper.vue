@@ -97,7 +97,8 @@
             },
 
             nextStep() {
-                axios.post(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id + '/next')
+                let timestamp = new Date().toISOString();
+                axios.post(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id + '/next/' + timestamp)
                     .then((response) => {
                         console.log(response);
                         this.loadStep()
