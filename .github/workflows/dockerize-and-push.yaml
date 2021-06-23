@@ -1,4 +1,4 @@
-name: dockerize and push
+name: Build & Push to Heroku Docker Registry
 
 on:
   push:
@@ -19,20 +19,15 @@ jobs:
         with:
           clean: false
 
-      - name: Docker Login
-        if: github.event_name == 'push'
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Docker Build and Push
-        if: github.event_name == 'push'
+      - name: Heroku Container Registry login
         env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          IMAGE_TAG: ${{ github.sha }}
-          SERVICE: 'thebeerhub-ui'
-        run: |
-          docker build -t $DOCKERHUB_USERNAME/$SERVICE:$IMAGE_TAG -t $DOCKERHUB_USERNAME/$SERVICE:latest .
-          docker push $DOCKERHUB_USERNAME/$SERVICE:$IMAGE_TAG
-          docker push $DOCKERHUB_USERNAME/$SERVICE:latest
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login
+      - name: Build and push
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
+      - name: Release
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web

@@ -20,14 +20,14 @@
                 small
                 @click.stop=""
               >
-                {{ brew.brew_type }}
+                {{ brew.brewType }}
               </v-chip>
 
               <h3 class="title font-weight-bold mb-2 caption">
-                {{ brew.brew_name }}
+                {{ brew.brewName }}
               </h3>
 
-              <div class="caption">{{ brew.author }}<br />{{ getDate(brew.datetime) }}</div>
+              <div class="caption">{{ brew.author }}<br />{{ getDate(brew.created) }}</div>
             </v-col>
 
             <v-col align-self="end">

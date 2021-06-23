@@ -113,7 +113,7 @@ export default {
           .get(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id)
           .then((response) => {
             console.log(response);
-            this.steps = response.data.data;
+            this.steps = response.data;
           })
           .catch((error) => {
             console.log(error);

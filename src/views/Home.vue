@@ -43,7 +43,7 @@ export default {
       .get(process.env.VUE_APP_API_BREW + "/brew")
       .then((response) => {
         console.log(response);
-        this.brews = response.data.data;
+        this.brews = response.data;
       })
       .catch((error) => {
         console.log(error);

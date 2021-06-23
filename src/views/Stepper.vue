@@ -7,7 +7,7 @@
                 <p class="display-2 text--primary">
                     {{duration}}
                 </p>
-                <p>{{brew.brew_name}} ({{brew.brew_type}}) </p>
+                <p>{{brew.brewName}} ({{brew.brewType}}) </p>
                 <div class="text--primary">
                     started: <i>{{ activeStep.started ? new Date(activeStep.started).toLocaleString() : '-' }}</i>
                 </div>

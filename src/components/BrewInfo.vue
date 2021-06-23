@@ -3,13 +3,13 @@
     <v-row>
       <v-col cols="12" md="3">
         <v-text-field
-          v-model="brew.brew_name"
+          v-model="brew.brewName"
           label="Name of brew"
         ></v-text-field>
       </v-col>
 
       <v-col cols="12" md="3">
-        <v-text-field v-model="brew.brew_type" label="Brew Type"></v-text-field>
+        <v-text-field v-model="brew.brewType" label="Brew Type"></v-text-field>
       </v-col>
 
       <v-col cols="12" md="3">
@@ -37,9 +37,9 @@
       </v-col>
 
       <v-col cols="12" md="3">
-        <v-text-field v-model="brew.tilt_url" label="Tilt Url" >
+        <v-text-field v-model="brew.tiltUrl" label="Tilt Url" >
           <v-icon
-                  @click="openTiltUrl(brew.tilt_url)"
+                  @click="openTiltUrl(brew.tiltUrl)"
                   slot="append"
                   color="green"
           >
@@ -53,7 +53,7 @@
     <v-row>
       <v-col cols="12" md="3">
         <v-text-field
-          v-model.number="brew.target_start_gravity"
+          v-model.number="brew.targetStartGravity"
           type="number"
           label="Target Start Gravity"
         ></v-text-field>
@@ -61,7 +61,7 @@
 
       <v-col cols="12" md="3">
         <v-text-field
-          v-model.number="brew.actual_start_gravity"
+          v-model.number="brew.actualStartGravity"
           type="number"
           label="Actual Start Gravity"
         ></v-text-field>
@@ -69,7 +69,7 @@
 
       <v-col cols="12" md="3">
         <v-text-field
-          v-model.number="brew.target_end_gravity"
+          v-model.number="brew.targetEndGravity"
           type="number"
           label="Target End Gravity"
         ></v-text-field>
@@ -77,7 +77,7 @@
 
       <v-col cols="12" md="3">
         <v-text-field
-          v-model.number="brew.actual_end_gravity"
+          v-model.number="brew.actualEndGravity"
           type="number"
           label="Actual End Gravity"
         ></v-text-field>
