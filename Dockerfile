@@ -10,6 +10,6 @@ RUN npm run build $mode
 # production stage
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
-# COPY prod_nginx.conf /etc/nginx/nginx.conf
+COPY default.conf.template /etc/nginx/conf.d/default.conf.template
 EXPOSE $PORT
-CMD ["nginx", "-g", "daemon off;"]
+CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
