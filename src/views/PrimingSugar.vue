@@ -161,12 +161,12 @@ export default {
 <style>
 
   .isselected {
-    background-color: #da671c;
+    background-color: var(--v-primary-base);
   }
 
   .theme--dark.v-data-table>.v-data-table__wrapper>table>tbody>tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
     opacity: 0.5;
-    background-color: #da671c;
+    background-color: var(--v-primary-base);
   }
 
 
