@@ -5,6 +5,7 @@ import Details from '../views/Details.vue'
 import Create from '../views/Create.vue'
 import Stepper from '../views/Stepper.vue'
 import PrimingSugar from '../views/PrimingSugar.vue'
+import Login from '../views/Login.vue'
 
 Vue.use(Router)
 
@@ -14,6 +15,12 @@ export default new Router({
   routes: [
 
     { path: '/', redirect: { name: 'home' }},
+
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
+    },
 
     {
       path: '/home',

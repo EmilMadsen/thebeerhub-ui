@@ -12,17 +12,10 @@
       >
       <v-spacer></v-spacer>
 
-      <!-- <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
+      <v-btn icon @click="gotoPage('login')">
+        <v-icon>mdi-account</v-icon>
       </v-btn>
 
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn> -->
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -54,7 +47,8 @@
       <router-view></router-view>
     </v-main>
 
-    <Footer />
+    <!-- <Footer /> -->
+
   </v-app>
 </template>
 
@@ -68,9 +62,9 @@ export default {
       group: null,
     }),
 
-  components: {
-    Footer: () => import("@/components/Footer"),
-  },
+  // components: {
+  //   Footer: () => import("@/components/Footer"),
+  // },
 
   methods: {
     gotoPage(name) {

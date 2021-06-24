@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import axios from "axios";
+
+import BrewService from '../service/BrewService'
 
 export default {
 
@@ -27,7 +28,7 @@ export default {
   methods: {
 
     saveBrew() {
-      axios
+      BrewService
         .post(process.env.VUE_APP_API_BREW + '/brew/', this.brew)
         .then((response) => {
           console.log(response);

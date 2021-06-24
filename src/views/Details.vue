@@ -32,7 +32,7 @@
 
 <script>
 
-import axios from "axios";
+import BrewService from '../service/BrewService'
 
 export default {
 
@@ -96,7 +96,7 @@ export default {
     },
 
     loadBrew() {
-      axios
+      BrewService
         .get(process.env.VUE_APP_API_BREW + "/brew/" + this.id)
         .then((response) => {
           console.log(response);
@@ -109,7 +109,7 @@ export default {
 
     loadSteps(parentId) {
       if (parentId) {
-        axios
+        BrewService
           .get(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id)
           .then((response) => {
             console.log(response);
@@ -122,7 +122,7 @@ export default {
     },
 
     saveBrew() {
-      axios
+      BrewService
         .post(process.env.VUE_APP_API_BREW + '/brew/', this.brew)
         .then((response) => {
           console.log(response);
@@ -141,7 +141,7 @@ export default {
 
     deleteBrew() {
       if (confirm("really? delete this?")) {
-        axios
+        BrewService
           .delete(process.env.VUE_APP_API_BREW + '/brew/' + this.brew.id)
           .then(response => {
             console.log(response)

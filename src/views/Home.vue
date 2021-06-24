@@ -23,7 +23,7 @@
 
 <script>
 
-import axios from "axios";
+import BrewService from '../service/BrewService.js'
 
 export default {
   components: {
@@ -39,7 +39,7 @@ export default {
   },
 
   mounted() {
-    axios
+    BrewService
       .get(process.env.VUE_APP_API_BREW + "/brew")
       .then((response) => {
         console.log(response);
@@ -55,7 +55,6 @@ export default {
     gotoBrew(brewId) {
       console.log("opening: " + brewId)
       this.$router.push({ path: '/details/' + brewId})
-
     }
 
   }
