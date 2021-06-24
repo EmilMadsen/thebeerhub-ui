@@ -32,11 +32,15 @@
           active-class="primary--text text--accent-4"
         >
           <v-list-item>
-            <v-list-item-title @click="gotoPage('home')">Home</v-list-item-title>
+            <v-list-item-title @click="gotoPage('home')">
+                <v-icon small>mdi-home</v-icon> Home
+            </v-list-item-title>
           </v-list-item>
 
           <v-list-item>
-            <v-list-item-title @click="gotoPage('priming')">Priming</v-list-item-title>
+            <v-list-item-title @click="gotoPage('priming')">
+                <v-icon small>mdi-beaker</v-icon> Priming
+            </v-list-item-title>
           </v-list-item>
           
         </v-list-item-group>
