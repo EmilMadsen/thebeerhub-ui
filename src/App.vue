@@ -53,6 +53,8 @@
       <router-view></router-view>
     </v-main>
 
+    <snackbar></snackbar>
+
     <!-- <Footer /> -->
 
   </v-app>
@@ -73,9 +75,10 @@ export default {
       ]
     }),
 
-  // components: {
-  //   Footer: () => import("@/components/Footer"),
-  // },
+  components: {
+    Snackbar: () => import("@/components/Snackbar"),
+      //   Footer: () => import("@/components/Footer"),
+  },
 
   mounted() {
     this.$store.dispatch("loadBrews")

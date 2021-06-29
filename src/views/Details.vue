@@ -49,6 +49,7 @@ export default {
   mounted() {
     if (this.id) {
       this.$store.commit('setSelectedId', this.id);
+      this.$store.dispatch('loadTiltLog', this.id);
     }
   },
 

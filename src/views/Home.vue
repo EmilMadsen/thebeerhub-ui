@@ -46,7 +46,7 @@ export default {
   methods: {
     gotoBrew(brewId) {
       this.$router.push({ path: '/details/' + brewId})
-    }
+    },
   }
 
 };
