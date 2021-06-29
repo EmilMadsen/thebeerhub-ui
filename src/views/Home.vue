@@ -10,20 +10,16 @@
       <feed-card
               v-for="(brew, i) in brews"
               :key="i"
-              :size="layout[i]"
+              :size="3"
               :brew="brew"
               v-on:gotobrew="gotoBrew"
       />
     </v-row>
 
-
-
   </v-container>
 </template>
 
 <script>
-
-import BrewService from '../service/BrewService.js'
 
 export default {
   components: {
@@ -33,32 +29,25 @@ export default {
 
   data() {
     return {
-      brews: [],
-      layout: [2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3], // TODO: move to model
+      // layout: [2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3], // TODO: move to model
     };
   },
 
   mounted() {
-    BrewService
-      .get(process.env.VUE_APP_API_BREW + "/brew")
-      .then((response) => {
-        console.log(response);
-        this.brews = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      this.$store.dispatch("loadBrews")
+  },
+
+  computed: {
+    brews() {
+      return this.$store.getters.getBrews;
+    }
   },
 
   methods: {
-
     gotoBrew(brewId) {
-      console.log("opening: " + brewId)
       this.$router.push({ path: '/details/' + brewId})
     }
-
   }
-
 
 };
 </script>

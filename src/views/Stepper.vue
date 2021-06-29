@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container v-if="brew">
 
         <v-card class="mx-auto" max-width="800">
             <v-card-text>
@@ -19,31 +19,51 @@
             </v-card-actions>
         </v-card>
 
+        <steps-component
+            v-bind:activeStep=activeStep
+            v-bind:brewSteps=brew.brewSteps
+        ></steps-component>
+
     </v-container>
 </template>
 
 <script>
 
-    import BrewService from '../service/BrewService'
-
     export default {
 
         props: ['id'],
 
+        components: {
+            StepsComponent: () => import("@/components/StepsComponent"),
+        },
+
         data() {
             return {
-                activeStep: {},
-                brew: {},
                 duration: "0d 0h 0m 0s",
             };
         },
 
         mounted() {
             if (this.id) {
-                this.loadStep();
-                this.loadBrew();
+                this.$store.commit('setSelectedId', this.id);
             }
             this.setDuration();
+        },
+
+        computed: {
+            brew() {
+                return this.$store.getters.getSelectedBrew;
+            },
+            activeStep() {
+                if (this.brew && this.brew.brewSteps) {
+                    for(let i = 0; i < this.brew.brewSteps.length; i++) {
+                        if (!this.brew.brewSteps[i].ended) {
+                            return this.brew.brewSteps[i];
+                        }
+                    }
+                }
+                return null;
+            }
         },
 
         methods: {
@@ -75,38 +95,9 @@
                 }, 1000);
             },
 
-            loadStep() {
-                  BrewService.get(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id + '/active')
-                      .then((response) => {
-                          console.log(response);
-                          this.activeStep = response.data;
-                      })
-                      .catch((error) => {
-                          console.log(error);
-                      });
-            },
-
-            loadBrew() {
-                BrewService.get(process.env.VUE_APP_API_BREW + "/brew/" + this.id)
-                    .then((response) => {
-                        console.log(response);
-                        this.brew = response.data;
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            },
-
             nextStep() {
                 let timestamp = new Date().toISOString();
-                BrewService.post(process.env.VUE_APP_API_BREW + "/step/parent/" + this.id + '/next/' + timestamp)
-                    .then((response) => {
-                        console.log(response);
-                        this.loadStep()
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                this.$store.dispatch('nextBrewStep', timestamp)
             }
 
         }

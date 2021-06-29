@@ -38,7 +38,7 @@
             </v-card-actions>
           </v-card>
 
-          <v-btn @click="killToken">kill token</v-btn>
+          <v-btn @click="logout">logout</v-btn>
           <v-btn @click="printToken">print token</v-btn>
 
         </v-flex>
@@ -48,8 +48,6 @@
 </template>
 
 <script>
-
-import BrewService from '../service/BrewService'
 
 export default {
 
@@ -63,18 +61,27 @@ export default {
     };
   },
 
+  computed: {
+    hasAuth() {
+      return this.$store.getters.getIsAuthenticated;
+    },
+    token() {
+      return this.$store.getters.getToken;
+    }
+  },
+
   methods: {
 
     login() {
-      BrewService.login( this.username, this.password)
+      this.$store.dispatch("login", {username: this.username, password: this.password})
     },
 
-    killToken() {
-      localStorage.removeItem('user-token');
+    logout() {
+      this.$store.commit("logout")
     },
 
     printToken() {
-      alert(localStorage.getItem('user-token'))
+      alert(this.token)
     }
 
   }
