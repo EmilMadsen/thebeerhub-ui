@@ -74,7 +74,7 @@ export default new Vuex.Store({
                             return config
                         })    
                         state.commit('showSnackbar', { text: 'Sucessfully logged in', color: 'green' })
-                        router.push({path: '/home'})
+                        router.push({path: '/home'}).catch(() => { /* ignore */ })
                     } else {
                         state.commit('showSnackbar', { text: response, color: 'red' })
                     }
