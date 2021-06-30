@@ -27,18 +27,18 @@
     </v-container>
 
     <BrewChart
-      v-if="brew && brew.tiltLogs"
-      v-bind:labels="getChartDataValues(brew.tiltLogs, 'timestamp')"
+      v-if="brew && tiltLogs && tiltLogs.length > 0"
+      v-bind:labels="getChartDataValues(tiltLogs, 'timestamp')"
       v-bind:datasetLabel="'gravity'"
-      v-bind:datasetData="getChartDataValues(brew.tiltLogs, 'gravity')"
+      v-bind:datasetData="getChartDataValues(tiltLogs, 'gravity')"
       v-bind:color="'green'"
     ></BrewChart>
 
     <BrewChart
-      v-if="brew && brew.tiltLogs"
-      v-bind:labels="getChartDataValues(brew.tiltLogs, 'timestamp')"
+      v-if="brew && tiltLogs && tiltLogs.length > 0"
+      v-bind:labels="getChartDataValues(tiltLogs, 'timestamp')"
       v-bind:datasetLabel="'temperature (celcius)'"
-      v-bind:datasetData="getChartDataValues(brew.tiltLogs, 'temperature')"
+      v-bind:datasetData="getChartDataValues(tiltLogs, 'temperature')"
       v-bind:color="'blue'"
     ></BrewChart>
 
@@ -75,6 +75,9 @@ export default {
     brew() {
       let brew = this.$store.getters.getSelectedBrew;
       return brew ? brew : {};
+    },
+    tiltLogs() {
+      return this.$store.getters.getTiltLogs;
     },
     hasAuth() {
       return this.$store.getters.getIsAuthenticated;

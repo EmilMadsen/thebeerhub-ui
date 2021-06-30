@@ -16,6 +16,7 @@ export default new Vuex.Store({
         token: localStorage.getItem('brewtoken') || '',
         brews: [],
         selectedId: null,
+        tiltLogs: [],
         snackbar: {
             text: '',
             color: ''
@@ -48,9 +49,9 @@ export default new Vuex.Store({
         setSelectedId(state, payload) {
             state.selectedId = payload;
         },
-        addLogs(state, logs) {
-            const brew = state.brews.find(brew => brew.id == state.selectedId);
-            Vue.set(brew, 'tiltLogs', logs)
+        setTiltLogs(state, logs) {
+            console.log("setTiltLogs", logs)
+            state.tiltLogs = logs;
         },
 
         showSnackbar (state, payload) {
@@ -140,7 +141,7 @@ export default new Vuex.Store({
         loadTiltLog(state, brewId) {
             axios.get(process.env.VUE_APP_API_BREW + "/brew/" + brewId + '/tilt-logs')
                 .then((response) => {
-                    state.commit('addLogs', response.data);
+                    state.commit('setTiltLogs', response.data);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -175,7 +176,7 @@ export default new Vuex.Store({
                 brew => brew.id == state.selectedId
             );
         },
-
+        getTiltLogs: state => state.tiltLogs,
         getSnackbar: state => state.snackbar,
     }
 });
