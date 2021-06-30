@@ -50,7 +50,6 @@ export default new Vuex.Store({
             state.selectedId = payload;
         },
         setTiltLogs(state, logs) {
-            console.log("setTiltLogs", logs)
             state.tiltLogs = logs;
         },
 
@@ -159,6 +158,18 @@ export default new Vuex.Store({
                     state.commit('showSnackbar', { text: error, color: 'red' })
                 });
         },
+
+        saveBrewStep(state, payload) {
+            axios.post(process.env.VUE_APP_API_BREW + "/step/parent/" + this.state.selectedId, payload)
+            .then((response) => {
+                this.dispatch("loadBrew", this.state.selectedId);
+                state.commit('showSnackbar', { text: 'Successfully updated brew step', color: 'green' })
+            })
+            .catch((error) => {
+                console.log(error);
+                state.commit('showSnackbar', { text: error, color: 'red' })
+            });
+        }
 
     },
     modules: {},

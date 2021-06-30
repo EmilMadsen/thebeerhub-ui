@@ -7,14 +7,22 @@
                 <p class="display-2 text--primary">
                     {{duration}}
                 </p>
-                <p>{{brew.brewName}} ({{brew.brewType}}) </p>
+                <v-chip
+                  label
+                  class="mx-0 mb-2 text-uppercase"
+                  color="primary"
+                  small
+                  @click.stop=""
+                >
+                  {{ brew.brewName }}  ({{brew.brewType}})
+                </v-chip>
                 <div class="text--primary">
                     started: <i>{{ activeStep.started ? new Date(activeStep.started).toLocaleString() : '-' }}</i>
                 </div>
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions v-if="!activeStep.ended">
                 <v-btn color="secondary" @click="nextStep">
-                    {{ activeStep.started ? 'Next Step': 'Start' }}
+                    {{ getNextStepText(activeStep) }}
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -39,7 +47,8 @@
 
         data() {
             return {
-                duration: "0d 0h 0m 0s",
+                duration: "0s",
+                counterInterval: null,
             };
         },
 
@@ -56,11 +65,14 @@
             },
             activeStep() {
                 if (this.brew && this.brew.brewSteps) {
+                    // get latest that has not ended
                     for(let i = 0; i < this.brew.brewSteps.length; i++) {
                         if (!this.brew.brewSteps[i].ended) {
                             return this.brew.brewSteps[i];
                         }
                     }
+                    // else get last item
+                    return this.brew.brewSteps[this.brew.brewSteps.length-1];
                 }
                 return null;
             }
@@ -68,13 +80,23 @@
 
         methods: {
 
+            getNextStepText(activeStep) {
+                if (!activeStep.started) {
+                    return 'Start';
+                }
+                if (activeStep.nextStep === null) {
+                    return 'End';
+                }
+                return 'Next Step';
+            },
+
             setDuration() {
                 // Update the duration every second
                 let self = this;
 
-                setInterval(function () {
+                this.counterInterval = setInterval(function () {
 
-                    if (self.activeStep && self.activeStep.started) {
+                    if (self.activeStep && self.activeStep.started && !self.activeStep.ended) {
                         // get todays date and time
                         let now = new Date().getTime();
                         let started = new Date(self.activeStep.started).getTime();
@@ -83,16 +105,21 @@
                         let distance = now - started;
 
                         // time calculations for days, hours, minutes and seconds
-                        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
+                        let durationString = self.$formatDuration(distance);
+            
                         // set result
-                        self.duration = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+                        self.duration = durationString;
+                    } else if (self.activeStep.ended) {
+                        let distance = new Date(self.activeStep.ended).getTime() - new Date(self.activeStep.started).getTime()
+                        self.duration = self.$formatDuration(distance);
+                        self.stopInterval();
                     }
 
                 }, 1000);
+            },
+
+            stopInterval() {
+                clearInterval(this.counterInterval);
             },
 
             nextStep() {

@@ -66,7 +66,6 @@ export default {
   mounted() {
     if (this.id) {
       this.$store.commit('setSelectedId', this.id);
-      console.log("loading tilt logs")
       this.$store.dispatch('loadTiltLog', this.id);
     }
   },

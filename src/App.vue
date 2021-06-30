@@ -113,6 +113,12 @@ export default {
     },
   },
 
+  watch: {
+    token(val) {
+      this.checkToken();
+    }
+  },
+
   methods: {
     gotoPage(name) {
       this.$router.push({ name: name }).catch((err) => {});

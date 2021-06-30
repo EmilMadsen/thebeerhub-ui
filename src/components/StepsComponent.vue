@@ -25,9 +25,21 @@
       >
         <step-card v-bind:step="step"></step-card>
 
-        <v-textarea v-model="step.description" label="description">
+        <v-textarea 
+          class="label-offset"
+          rows=2
+          hide-details
+          v-model="step.description" 
+          background-color="#1e1e1e" 
+          label="description">
         </v-textarea>
       </v-stepper-content>
+
+      <v-card-actions>
+        <v-row class="ma-1">
+            <v-btn small color="secondary" @click="saveStep">Save</v-btn>
+        </v-row>
+      </v-card-actions>
     </v-stepper-items>
   </v-stepper>
 </template>
@@ -45,10 +57,35 @@ export default {
     };
   },
 
+  watch: {
+    activeStep(val, oldVal) {
+      console.log("activeStep changed")
+      console.log(val)
+      console.log(oldVal)
+      this.currentStep = val.index;
+    }
+  },
+
   mounted() {
     this.currentStep = this.activeStep.index;
   },
 
-  methods: {},
+  methods: {
+
+    saveStep() {
+      // find currentStep
+        let currBrewStep = this.brewSteps.find(brew => brew.index == this.currentStep);
+        this.$store.dispatch('saveBrewStep', currBrewStep)
+    }
+
+  },
 };
 </script>
+<style>
+ .label-offset textarea {
+   padding: 8px
+ }
+ .label-offset label {
+   left: 8px !important
+ }
+</style>
