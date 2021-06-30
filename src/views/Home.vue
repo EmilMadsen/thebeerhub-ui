@@ -6,7 +6,9 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="brews.length > 0">
+    <loader v-if="loading"></loader>
+
+    <v-row v-else>
       <feed-card
               v-for="(brew, i) in brews"
               :key="i"
@@ -25,6 +27,7 @@ export default {
   components: {
     FeedCard: () => import("@/components/FeedCard"),
     Banner: () => import("@/components/Banner"),
+    Loader: () => import("@/components/Loader"),
   },
 
   data() {
@@ -34,12 +37,17 @@ export default {
   },
 
   mounted() {
+    if(!this.loading) {
       this.$store.dispatch("loadBrews")
+    }
   },
 
   computed: {
     brews() {
       return this.$store.getters.getBrews;
+    },
+    loading() {
+      return this.$store.getters.getIsLoading;
     }
   },
 

@@ -26,6 +26,22 @@
       </v-btn>
     </v-container>
 
+    <BrewChart
+      v-if="brew && brew.tiltLogs"
+      v-bind:labels="getChartDataValues(brew.tiltLogs, 'timestamp')"
+      v-bind:datasetLabel="'gravity'"
+      v-bind:datasetData="getChartDataValues(brew.tiltLogs, 'gravity')"
+      v-bind:color="'green'"
+    ></BrewChart>
+
+    <BrewChart
+      v-if="brew && brew.tiltLogs"
+      v-bind:labels="getChartDataValues(brew.tiltLogs, 'timestamp')"
+      v-bind:datasetLabel="'temperature (celcius)'"
+      v-bind:datasetData="getChartDataValues(brew.tiltLogs, 'temperature')"
+      v-bind:color="'blue'"
+    ></BrewChart>
+
   </v-container>
 </template>
 
@@ -38,6 +54,7 @@ export default {
   components: {
     BrewInfo: () => import("@/components/BrewInfo"),
     StepCard: () => import("@/components/StepCard"),
+    BrewChart: () => import("@/components/BrewChart"),
   },
 
   data() {
@@ -49,13 +66,15 @@ export default {
   mounted() {
     if (this.id) {
       this.$store.commit('setSelectedId', this.id);
+      console.log("loading tilt logs")
       this.$store.dispatch('loadTiltLog', this.id);
     }
   },
 
   computed: {
     brew() {
-      return this.$store.getters.getSelectedBrew;
+      let brew = this.$store.getters.getSelectedBrew;
+      return brew ? brew : {};
     },
     hasAuth() {
       return this.$store.getters.getIsAuthenticated;
@@ -63,6 +82,13 @@ export default {
   },
 
   methods: {
+
+    getChartDataValues(logs, target) {
+      if (logs) {
+        return logs.map(log => log[target])
+      }
+      return [];
+    },
 
     gotoStepper(brewId) {
       this.$router.push({ path: '/stepper/' + brewId})

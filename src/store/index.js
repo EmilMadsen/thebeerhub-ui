@@ -12,6 +12,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        loading: true,
         token: localStorage.getItem('brewtoken') || '',
         brews: [],
         selectedId: null,
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     mutations: {
         // sync
 
+        setLoading(state, payload) {
+            state.loading = payload;
+        },
         setToken(state, payload) {
             state.token = payload;
         },
@@ -46,7 +50,7 @@ export default new Vuex.Store({
         },
         addLogs(state, logs) {
             const brew = state.brews.find(brew => brew.id == state.selectedId);
-            brew.tiltLogs = logs;
+            Vue.set(brew, 'tiltLogs', logs)
         },
 
         showSnackbar (state, payload) {
@@ -80,13 +84,16 @@ export default new Vuex.Store({
         },
 
         loadBrews(state) {
+            state.commit('setLoading', true)
             axios.get(process.env.VUE_APP_API_BREW + "/brew")
                 .then((response) => {
                     state.commit('setBrews', response.data);
+                    state.commit('setLoading', false)
                 })
                 .catch((error) => {
                     console.log(error);
                     state.commit('showSnackbar', { text: error, color: 'red' })
+                    state.commit('setLoading', false)
                 });
         },
 
@@ -155,6 +162,9 @@ export default new Vuex.Store({
     },
     modules: {},
     getters: {
+        getIsLoading(state) {
+            return state.loading;
+        },
         getIsAuthenticated(state) {
             return Boolean(state.token);
         },
