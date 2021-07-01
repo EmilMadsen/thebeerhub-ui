@@ -1,11 +1,20 @@
 <template>
-  <v-container>
+  <v-container class="mb-16"> <!-- TODO fix login modal offset-->
 
     <brew-info
       v-bind:brew=brew
       v-on:save="saveBrew"
-      v-on:delete="deleteBrew"
-      ></brew-info>
+      v-on:delete="deleteBrew">
+    </brew-info>
+
+    <v-col>
+      <image-carousel 
+        v-if="brew.images && brew.images.length > 0"
+        :images="brew.images"
+      ></image-carousel>
+
+      <v-btn class="mt-4" small v-if="hasAuth" color="secondary" @click="imageDialog = true"> Add Image </v-btn>
+    </v-col>
 
     <v-container v-if="brew">
       <v-row>
@@ -42,6 +51,10 @@
       v-bind:color="'blue'"
     ></BrewChart>
 
+    <image-upload-dialog
+      :show.sync="imageDialog"
+    ></image-upload-dialog>
+
   </v-container>
 </template>
 
@@ -53,12 +66,15 @@ export default {
 
   components: {
     BrewInfo: () => import("@/components/BrewInfo"),
+    ImageCarousel: () => import("@/components/ImageCarousel"),
+    ImageUploadDialog: () => import("@/components/ImageUploadDialog"),
     StepCard: () => import("@/components/StepCard"),
     BrewChart: () => import("@/components/BrewChart"),
   },
 
   data() {
     return {
+        imageDialog: false,
       //
     };
   },

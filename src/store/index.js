@@ -169,6 +169,39 @@ export default new Vuex.Store({
                 console.log(error);
                 state.commit('showSnackbar', { text: error, color: 'red' })
             });
+        },
+
+        saveBrewImage(state, payload) {
+
+            let data = new FormData();
+            data.append('image', payload)
+
+            var headers = { 'Content-Type': 'multipart/form-data',};
+            
+            axios.post(process.env.VUE_APP_API_BREW + "/image/upload/brew/" + this.state.selectedId, data, { headers } )
+            .then((response) => {
+                this.dispatch("loadBrew", this.state.selectedId);
+                state.commit('showSnackbar', { text: 'Successfully added image', color: 'green' })
+            })
+            .catch((error) => {
+                console.log(error);
+                state.commit('showSnackbar', { text: error, color: 'red' })
+            });
+
+        },
+
+        deleteImage(state, imageId) {
+
+            axios.delete(process.env.VUE_APP_API_BREW + "/image/" + imageId )
+            .then((response) => {
+                this.dispatch("loadBrew", this.state.selectedId);
+                state.commit('showSnackbar', { text: 'Successfully deleted image', color: 'warning' })
+            })
+            .catch((error) => {
+                console.log(error);
+                state.commit('showSnackbar', { text: error, color: 'red' })
+            });
+
         }
 
     },
