@@ -33,3 +33,5 @@ mode arg (env):
 ```
 docker build --build-arg mode='-- --mode development' -t emilmadsen/thebeerhub-ui:tag .
 ```
+
+
